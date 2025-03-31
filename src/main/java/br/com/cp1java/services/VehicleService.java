@@ -22,4 +22,12 @@ public class VehicleService {
     public Vehicle getById(UUID id) {
         return vehicleRepository.findById(id).orElse(null);
     }
+
+    public Vehicle update(UUID id, Vehicle vehicle) {
+        Vehicle vehicleToUpdate = getById(id);
+        if (vehicleToUpdate != null) {
+            return vehicleRepository.save(vehicleToUpdate);
+        }
+        return null;
+    }
 }

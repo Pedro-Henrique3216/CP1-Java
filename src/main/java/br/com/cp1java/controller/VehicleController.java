@@ -39,6 +39,16 @@ public class VehicleController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<VehicleResponse> updateVehicle(@PathVariable UUID id, @RequestBody @Valid VehicleRequest data){
+        Vehicle vehicle = transformToVehicle(data);
+        Vehicle vehicleUpdated = vehicleService.update(id, vehicle);
+        if(vehicleUpdated != null){
+            return ResponseEntity.ok(transformToResponse(vehicleUpdated));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
     private Vehicle transformToVehicle(VehicleRequest data){
         return new Vehicle(data.marca(), data.modelo(), data.ano(), data.potencia(), data.economia(),
