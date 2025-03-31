@@ -25,7 +25,13 @@ public class VehicleController {
 
     @PostMapping
     public ResponseEntity<VehicleResponse> saveVehicle(@RequestBody @Valid VehicleRequest data, UriComponentsBuilder uriBuilder){
-        Vehicle vehicle = transformToVehicle(data);
+        Vehicle vehicle;
+        try {
+            vehicle = transformToVehicle(data);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
         Vehicle vehicleSaved = vehicleService.save(vehicle);
         URI uri = uriBuilder.path("/carros/{id}").buildAndExpand(vehicleSaved.getId()).toUri();
         return ResponseEntity.created(uri).body(transformToResponse(vehicleSaved));
@@ -42,7 +48,12 @@ public class VehicleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<VehicleResponse> updateVehicle(@PathVariable UUID id, @RequestBody @Valid VehicleRequest data){
-        Vehicle vehicle = transformToVehicle(data);
+        Vehicle vehicle;
+        try {
+            vehicle = transformToVehicle(data);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
         Vehicle vehicleUpdated = vehicleService.update(id, vehicle);
         if(vehicleUpdated != null){
             return ResponseEntity.ok(transformToResponse(vehicleUpdated));
