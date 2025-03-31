@@ -1,6 +1,8 @@
 package br.com.cp1java.controller;
 
 import br.com.cp1java.services.VehicleService;
+import domain.dtos.VehicleRequest;
+import domain.dtos.VehicleResponse;
 import domain.model.Vehicle;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
