@@ -1,7 +1,7 @@
 package br.com.cp1java.services;
 
 import br.com.cp1java.repositories.VehicleRepository;
-import domain.model.Vehicle;
+import br.com.cp1java.domain.model.Vehicle;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

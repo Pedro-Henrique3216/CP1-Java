@@ -1,6 +1,6 @@
-package domain.dtos;
+package br.com.cp1java.domain.dtos;
 
-import domain.model.VehicleType;
+import br.com.cp1java.domain.model.VehicleType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

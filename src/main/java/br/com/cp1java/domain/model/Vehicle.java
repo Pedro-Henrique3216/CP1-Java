@@ -1,4 +1,4 @@
-package domain.model;
+package br.com.cp1java.domain.model;
 
 import lombok.*;
 

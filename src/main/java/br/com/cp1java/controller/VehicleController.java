@@ -1,9 +1,9 @@
 package br.com.cp1java.controller;
 
 import br.com.cp1java.services.VehicleService;
-import domain.dtos.VehicleRequest;
-import domain.dtos.VehicleResponse;
-import domain.model.Vehicle;
+import br.com.cp1java.domain.dtos.VehicleRequest;
+import br.com.cp1java.domain.dtos.VehicleResponse;
+import br.com.cp1java.domain.model.Vehicle;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
