@@ -1,16 +1,17 @@
 package br.com.cp1java.controller;
 
-import br.com.cp1java.domain.model.VehicleType;
-import br.com.cp1java.services.VehicleService;
 import br.com.cp1java.domain.dtos.VehicleRequest;
 import br.com.cp1java.domain.dtos.VehicleResponse;
 import br.com.cp1java.domain.model.Vehicle;
+import br.com.cp1java.domain.model.VehicleType;
+import br.com.cp1java.services.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -65,6 +66,16 @@ public class VehicleController {
     public ResponseEntity<VehicleResponse> deleteVehicle(@PathVariable UUID id){
         vehicleService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/potencia")
+    public ResponseEntity<List<VehicleResponse>> getTopVehiclesByPotencia(){
+        List<VehicleResponse> vehicleResponses = vehicleService.getVehiclesWithHighestPotencia()
+                                .stream()
+                                .map(this::transformToResponse)
+                                .toList();
+
+        return ResponseEntity.ok(vehicleResponses);
     }
 
 
