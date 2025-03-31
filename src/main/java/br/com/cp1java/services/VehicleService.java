@@ -4,6 +4,7 @@ import br.com.cp1java.domain.model.Vehicle;
 import br.com.cp1java.repositories.VehicleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,5 +39,9 @@ public class VehicleService {
 
     public List<Vehicle>  getVehiclesWithHighestPotencia() {
         return vehicleRepository.findTop10ByOrderByPotenciaDesc();
+    }
+
+    public List<Vehicle> getVehiclesWithHighestEconomia() {
+        return vehicleRepository.findTop10ByOrderByEconomiaDesc();
     }
 }

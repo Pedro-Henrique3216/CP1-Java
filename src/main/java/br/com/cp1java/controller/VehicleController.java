@@ -78,6 +78,16 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleResponses);
     }
 
+    @GetMapping("/economia")
+    public ResponseEntity<List<VehicleResponse>> getTopVehiclesByEconomia(){
+        List<VehicleResponse> vehicleResponses = vehicleService.getVehiclesWithHighestEconomia()
+                .stream()
+                .map(this::transformToResponse)
+                .toList();
+
+        return ResponseEntity.ok(vehicleResponses);
+    }
+
 
     private Vehicle transformToVehicle(VehicleRequest data){
         return new Vehicle(data.marca(), data.modelo(), data.ano(), data.potencia(), data.economia(),

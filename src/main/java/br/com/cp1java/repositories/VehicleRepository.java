@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
 
     List<Vehicle> findTop10ByOrderByPotenciaDesc();
+
+    List<Vehicle> findTop10ByOrderByEconomiaDesc();
 }
