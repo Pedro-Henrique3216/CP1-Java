@@ -43,6 +43,9 @@ public class Vehicle {
         this.preco = preco;
     }
 
+    public Vehicle() {
+    }
+
     public UUID getId() {
         return id;
     }
