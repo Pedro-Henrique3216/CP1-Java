@@ -88,6 +88,16 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleResponses);
     }
 
+    @GetMapping("/eletricos")
+    public ResponseEntity<List<VehicleResponse>> getAllVehiclesEltricos(){
+        List<VehicleResponse> vehicleResponses = vehicleService.findAllVehiclesEletricos()
+                .stream()
+                .map(this::transformToResponse)
+                .toList();
+
+        return ResponseEntity.ok(vehicleResponses);
+    }
+
 
     private Vehicle transformToVehicle(VehicleRequest data){
         return new Vehicle(data.marca(), data.modelo(), data.ano(), data.potencia(), data.economia(),

@@ -1,6 +1,7 @@
 package br.com.cp1java.services;
 
 import br.com.cp1java.domain.model.Vehicle;
+import br.com.cp1java.domain.model.VehicleType;
 import br.com.cp1java.repositories.VehicleRepository;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,9 @@ public class VehicleService {
 
     public List<Vehicle> getVehiclesWithHighestEconomia() {
         return vehicleRepository.findTop10ByOrderByEconomiaDesc();
+    }
+
+    public List<Vehicle> findAllVehiclesEletricos() {
+        return vehicleRepository.findAllByTipo(VehicleType.ELETRICO);
     }
 }
