@@ -1,5 +1,6 @@
 package br.com.cp1java.controller;
 
+import br.com.cp1java.domain.model.VehicleType;
 import br.com.cp1java.services.VehicleService;
 import br.com.cp1java.domain.dtos.VehicleRequest;
 import br.com.cp1java.domain.dtos.VehicleResponse;
@@ -58,7 +59,7 @@ public class VehicleController {
 
     private Vehicle transformToVehicle(VehicleRequest data){
         return new Vehicle(data.marca(), data.modelo(), data.ano(), data.potencia(), data.economia(),
-                data.tipo(), data.preco());
+                VehicleType.valueOf(data.tipo().toUpperCase()), data.preco());
     }
 
     private VehicleResponse transformToResponse(Vehicle vehicle){

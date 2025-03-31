@@ -13,7 +13,7 @@ public record VehicleRequest(
         @NotNull Integer ano,
         @NotNull Double potencia,
         @NotNull Double economia,
-        @NotBlank VehicleType tipo,
+        @NotBlank String tipo,
         @NotNull BigDecimal preco
 ) {
 }
