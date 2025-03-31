@@ -4,6 +4,8 @@ import br.com.cp1java.repositories.VehicleRepository;
 import domain.model.Vehicle;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class VehicleService {
 
@@ -15,5 +17,9 @@ public class VehicleService {
 
     public Vehicle save(Vehicle vehicle) {
         return vehicleRepository.save(vehicle);
+    }
+
+    public Vehicle getById(UUID id) {
+        return vehicleRepository.findById(id).orElse(null);
     }
 }
