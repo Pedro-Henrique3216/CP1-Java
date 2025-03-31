@@ -28,7 +28,7 @@ public class VehicleService {
     public Vehicle update(UUID id, Vehicle vehicle) {
         Vehicle vehicleToUpdate = getById(id);
         if (vehicleToUpdate != null) {
-            return vehicleRepository.save(vehicleToUpdate);
+            return vehicleRepository.save(vehicle);
         }
         return null;
     }
