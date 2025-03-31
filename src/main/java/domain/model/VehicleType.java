@@ -1,4 +1,4 @@
-package br.com.cp1java.model;
+package domain.model;
 
 public enum VehicleType {
     COMBUSTAO,
