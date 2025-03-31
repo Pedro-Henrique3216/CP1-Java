@@ -6,13 +6,11 @@ import domain.dtos.VehicleResponse;
 import domain.model.Vehicle;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/carros")
@@ -30,6 +28,15 @@ public class VehicleController {
         Vehicle vehicleSaved = vehicleService.save(vehicle);
         URI uri = uriBuilder.path("/carros/{id}").buildAndExpand(vehicleSaved.getId()).toUri();
         return ResponseEntity.created(uri).body(transformToResponse(vehicleSaved));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VehicleResponse> getVehicleById(@PathVariable UUID id){
+        Vehicle vehicle = vehicleService.getById(id);
+        if(vehicle != null){
+            return ResponseEntity.ok(transformToResponse(vehicle));
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
