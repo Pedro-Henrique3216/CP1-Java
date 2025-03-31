@@ -49,6 +49,12 @@ public class VehicleController {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<VehicleResponse> deleteVehicle(@PathVariable UUID id){
+        vehicleService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
     private Vehicle transformToVehicle(VehicleRequest data){
         return new Vehicle(data.marca(), data.modelo(), data.ano(), data.potencia(), data.economia(),

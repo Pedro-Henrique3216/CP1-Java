@@ -30,4 +30,8 @@ public class VehicleService {
         }
         return null;
     }
+
+    public void delete(UUID id) {
+        vehicleRepository.deleteById(id);
+    }
 }
