@@ -6,10 +6,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "Vehicles")
@@ -76,5 +73,33 @@ public class Vehicle {
 
     public BigDecimal getPreco() {
         return preco;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setAno(Integer ano) {
+        this.ano = ano;
+    }
+
+    public void setPotencia(Double potencia) {
+        this.potencia = potencia;
+    }
+
+    public void setEconomia(Double economia) {
+        this.economia = economia;
+    }
+
+    public void setTipo(VehicleType tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
     }
 }
