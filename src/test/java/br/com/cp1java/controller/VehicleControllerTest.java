@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -144,5 +147,42 @@ class VehicleControllerTest {
                 .get("/carros/" + vehicleResponse.id())
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    void testGetTopVehiclesByPotencia_shouldReturnTopVehicles(){
+        List<VehicleResponse> vehicleResponses = new ArrayList<>();
+        for(int i = 0; i < 15; i++){
+            vehicleResponses.add(saveVehicleWithRandomInfo());
+        }
+        vehicleResponses.sort(Comparator.comparing(VehicleResponse::potencia).reversed());
+        List<String> expected = vehicleResponses
+                .stream()
+                .limit(10)
+                .map(v -> String.format("{id=%s, marca=%s, modelo=%s, ano=%d, potencia=%.2f, economia=%.2f, tipo=%s, preco=%.2f}",
+                        v.id(), v.marca(), v.modelo(), v.ano(), v.potencia(), v.economia(), v.tipo(), v.preco()))
+                .toList();
+
+        given()
+                .when()
+                .get("/carros/potencia")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("", equalTo(expected));
+
+
+    }
+
+    private VehicleResponse saveVehicleWithRandomInfo() {
+        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "Corolla", 2023, Math.random() * 901 + 100, Math.random() * 901 + 100, "COMBUSTAO", new BigDecimal("120000.00"));
+        return given()
+                .contentType(ContentType.JSON)
+                .body(vehicleRequest)
+                .when()
+                .post("/carros")
+                .then()
+                .statusCode(201)
+                .extract().body().as(VehicleResponse.class);
     }
 }
