@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VehicleControllerTest {
@@ -83,5 +82,51 @@ class VehicleControllerTest {
                 .get("/carros/e83e5705-20cf-4004-969f-4895467b831f")
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    void testUpdateVehicle_shouldReturnUpdatedVehicle_whenValidData(){
+        VehicleResponse vehicleResponse = saveVehicle();
+        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "Corolla", 2023, 140.5, 12.5, "ELETRICO", new BigDecimal("120000.00"));
+        given()
+        .contentType(ContentType.JSON)
+                .body(vehicleRequest)
+                .when()
+                .put("/carros/" + vehicleResponse.id())
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(vehicleResponse.id().toString()))
+                .body("marca", equalTo(vehicleRequest.marca()))
+                .body("modelo", equalTo(vehicleRequest.modelo()))
+                .body("ano", equalTo(vehicleRequest.ano()))
+                .body("potencia", equalTo(vehicleRequest.potencia().floatValue()))
+                .body("economia", equalTo(vehicleRequest.economia().floatValue()))
+                .body("tipo", equalTo(vehicleRequest.tipo()))
+                .body("preco", equalTo(vehicleRequest.preco().floatValue()));
+    }
+
+    @Test
+    void testUpdateVehicle_shouldReturnBadRequest_whenInvalidData(){
+        VehicleResponse vehicleResponse = saveVehicle();
+        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "", 2023, 140.5, 12.5, "ELETRICO", new BigDecimal("120000.00"));
+        given()
+                .contentType(ContentType.JSON)
+                .body(vehicleRequest)
+                .when()
+                .put("/carros/" + vehicleResponse.id())
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    void testUpdateVehicle_shouldReturnNotFound_whenVehicleNotFound(){
+        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "", 2023, 140.5, 12.5, "ELETRICO", new BigDecimal("120000.00"));
+        given()
+                .contentType(ContentType.JSON)
+                .body(vehicleRequest)
+                .when()
+                .put("/carros/e83e5705-20cf-4004-969f-4895467b831f")
+                .then()
+                .statusCode(400);
     }
 }
