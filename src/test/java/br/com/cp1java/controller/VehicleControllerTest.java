@@ -56,4 +56,32 @@ class VehicleControllerTest {
                 .statusCode(201)
                 .extract().body().as(VehicleResponse.class);
     }
+
+    @Test
+    void testGetVehicleById_shouldReturnVehicle_whenVehicleExists() {
+        VehicleResponse vehicleResponse = saveVehicle();
+        given()
+                .when()
+                .get("/carros/" + vehicleResponse.id())
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("id", equalTo(vehicleResponse.id().toString()))
+                .body("marca", equalTo(vehicleResponse.marca()))
+                .body("modelo", equalTo(vehicleResponse.modelo()))
+                .body("ano", equalTo(vehicleResponse.ano()))
+                .body("potencia", equalTo(vehicleResponse.potencia().floatValue()))
+                .body("economia", equalTo(vehicleResponse.economia().floatValue()))
+                .body("tipo", equalTo(vehicleResponse.tipo().toString()))
+                .body("preco", equalTo(vehicleResponse.preco().floatValue()));
+    }
+
+    @Test
+    void testGetVehicleById_shouldReturnNotFound_whenVehicleDoesNotExist(){
+        given()
+                .when()
+                .get("/carros/e83e5705-20cf-4004-969f-4895467b831f")
+                .then()
+                .statusCode(404);
+    }
 }
