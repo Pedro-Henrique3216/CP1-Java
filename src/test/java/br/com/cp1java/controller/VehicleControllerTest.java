@@ -129,4 +129,20 @@ class VehicleControllerTest {
                 .then()
                 .statusCode(400);
     }
+
+    @Test
+    void testDeleteVehicle_shouldReturnNoContent(){
+        VehicleResponse vehicleResponse = saveVehicle();
+        given()
+                .when()
+                .delete("/carros/" + vehicleResponse.id())
+                .then()
+                .statusCode(204);
+
+        given()
+                .when()
+                .get("/carros/" + vehicleResponse.id())
+                .then()
+                .statusCode(404);
+    }
 }
