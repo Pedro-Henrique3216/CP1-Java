@@ -28,7 +28,14 @@ public class VehicleService {
     public Vehicle update(UUID id, Vehicle vehicle) {
         Vehicle vehicleToUpdate = getById(id);
         if (vehicleToUpdate != null) {
-            return vehicleRepository.save(vehicle);
+            vehicleToUpdate.setMarca(vehicle.getMarca());
+            vehicleToUpdate.setAno(vehicle.getAno());
+            vehicleToUpdate.setTipo(vehicle.getTipo());
+            vehicleToUpdate.setEconomia(vehicle.getEconomia());
+            vehicleToUpdate.setPotencia(vehicle.getPotencia());
+            vehicleToUpdate.setPreco(vehicle.getPreco());
+            vehicleToUpdate.setModelo(vehicle.getModelo());
+            return vehicleRepository.save(vehicleToUpdate);
         }
         return null;
     }
