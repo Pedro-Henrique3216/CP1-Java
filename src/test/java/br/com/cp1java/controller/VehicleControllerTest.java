@@ -242,7 +242,7 @@ class VehicleControllerTest {
                 .body("[" + lastIndex + "].modelo", equalTo("Corolla"))
                 .body("[" + lastIndex + "].ano", equalTo(2023))
                 .body("[" + lastIndex + "].tipo", equalTo(vehicleResponses.get(lastIndex).tipo().toString()))
-                .extract().body() .as(new TypeRef<List<VehicleResponse>>() {});
+                .extract().body() .as(new TypeRef<>() {});
 
         assertEquals(vehicleResponses, actual);
 
