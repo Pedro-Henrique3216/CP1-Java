@@ -167,7 +167,7 @@ class VehicleControllerTest {
                 .limit(10)
                 .toList();
 
-        given()
+        List<VehicleResponse> actual = given()
                 .when()
                 .get("/carros/potencia")
                 .then()
@@ -180,9 +180,11 @@ class VehicleControllerTest {
                 .body("[9].marca", equalTo("Toyota"))
                 .body("[9].modelo", equalTo("Corolla"))
                 .body("[9].ano", equalTo(2023))
-                .body("[9].potencia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(9).potencia()))));
+                .body("[9].potencia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(9).potencia()))))
+                .extract().body() .as(new TypeRef<>() {});
 
         assertTrue(expected.get(0).potencia() > expected.get(9).potencia());
+        assertEquals(expected, actual);
     }
 
     @Test
