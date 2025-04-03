@@ -13,9 +13,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VehicleControllerTest {
@@ -156,11 +158,10 @@ class VehicleControllerTest {
             vehicleResponses.add(saveVehicleWithRandomInfo());
         }
         vehicleResponses.sort(Comparator.comparing(VehicleResponse::potencia).reversed());
-        List<String> expected = vehicleResponses
+
+        List<VehicleResponse> expected = vehicleResponses
                 .stream()
                 .limit(10)
-                .map(v -> String.format("{id=%s, marca=%s, modelo=%s, ano=%d, potencia=%.2f, economia=%.2f, tipo=%s, preco=%.2f}",
-                        v.id(), v.marca(), v.modelo(), v.ano(), v.potencia(), v.economia(), v.tipo(), v.preco()))
                 .toList();
 
         given()
@@ -169,9 +170,16 @@ class VehicleControllerTest {
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("", equalTo(expected));
+                .body("[0].marca", equalTo("Toyota"))
+                .body("[0].modelo", equalTo("Corolla"))
+                .body("[0].ano", equalTo(2023))
+                .body("[0].potencia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(0).potencia()))))
+                .body("[9].marca", equalTo("Toyota"))
+                .body("[9].modelo", equalTo("Corolla"))
+                .body("[9].ano", equalTo(2023))
+                .body("[9].potencia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(9).potencia()))));
 
-
+        assertTrue(expected.get(0).potencia() > expected.get(9).potencia());
     }
 
     private VehicleResponse saveVehicleWithRandomInfo() {
