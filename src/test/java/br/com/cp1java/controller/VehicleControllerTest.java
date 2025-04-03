@@ -2,7 +2,9 @@ package br.com.cp1java.controller;
 
 import br.com.cp1java.domain.dtos.VehicleRequest;
 import br.com.cp1java.domain.dtos.VehicleResponse;
+import br.com.cp1java.domain.model.VehicleType;
 import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import java.util.Locale;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -213,8 +216,41 @@ class VehicleControllerTest {
         assertTrue(expected.get(0).economia() > expected.get(9).economia());
     }
 
+    @Test
+    void testGetAllVehiclesEletricos_shouldReturnElectricVehicles(){
+        List<VehicleResponse> vehicleResponses = new ArrayList<>();
+        for(int i = 0; i < 15; i++){
+            vehicleResponses.add(saveVehicleWithRandomInfo());
+        }
+        vehicleResponses = vehicleResponses
+                .stream()
+                .filter(vehicle -> vehicle.tipo() == VehicleType.ELETRICO)
+                .toList();
+
+        int lastIndex = vehicleResponses.size() - 1;
+        List<VehicleResponse> actual = given()
+                .when()
+                .get("/carros/eletricos")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("[0].marca", equalTo("Toyota"))
+                .body("[0].modelo", equalTo("Corolla"))
+                .body("[0].ano", equalTo(2023))
+                .body("[0].tipo", equalTo(vehicleResponses.get(0).tipo().toString()))
+                .body("[" + lastIndex + "].marca", equalTo("Toyota"))
+                .body("[" + lastIndex + "].modelo", equalTo("Corolla"))
+                .body("[" + lastIndex + "].ano", equalTo(2023))
+                .body("[" + lastIndex + "].tipo", equalTo(vehicleResponses.get(lastIndex).tipo().toString()))
+                .extract().body() .as(new TypeRef<List<VehicleResponse>>() {});
+
+        assertEquals(vehicleResponses, actual);
+
+    }
+
     private VehicleResponse saveVehicleWithRandomInfo() {
-        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "Corolla", 2023, Math.random() * 901 + 100, Math.random() * 901 + 100, "COMBUSTAO", new BigDecimal("120000.00"));
+        int randomNumberVehicleType = (int) (Math.random() * 2) + 1;
+        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "Corolla", 2023, Double.parseDouble(String.format(Locale.US, "%.2f", Math.random() * 901 + 100)), Double.parseDouble(String.format(Locale.US, "%.2f", Math.random() * 901 + 100)), VehicleType.values()[randomNumberVehicleType].toString(), new BigDecimal("120000.00"));
         return given()
                 .contentType(ContentType.JSON)
                 .body(vehicleRequest)
