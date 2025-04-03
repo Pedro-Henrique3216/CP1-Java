@@ -182,6 +182,37 @@ class VehicleControllerTest {
         assertTrue(expected.get(0).potencia() > expected.get(9).potencia());
     }
 
+    @Test
+    void testGetTopVehiclesByEconomia_shouldReturnTopVehicles(){
+        List<VehicleResponse> vehicleResponses = new ArrayList<>();
+        for(int i = 0; i < 15; i++){
+            vehicleResponses.add(saveVehicleWithRandomInfo());
+        }
+        vehicleResponses.sort(Comparator.comparing(VehicleResponse::economia).reversed());
+
+        List<VehicleResponse> expected = vehicleResponses
+                .stream()
+                .limit(10)
+                .toList();
+
+        given()
+                .when()
+                .get("/carros/economia")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("[0].marca", equalTo("Toyota"))
+                .body("[0].modelo", equalTo("Corolla"))
+                .body("[0].ano", equalTo(2023))
+                .body("[0].economia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(0).economia()))))
+                .body("[9].marca", equalTo("Toyota"))
+                .body("[9].modelo", equalTo("Corolla"))
+                .body("[9].ano", equalTo(2023))
+                .body("[9].economia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(9).economia()))));
+
+        assertTrue(expected.get(0).economia() > expected.get(9).economia());
+    }
+
     private VehicleResponse saveVehicleWithRandomInfo() {
         VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "Corolla", 2023, Math.random() * 901 + 100, Math.random() * 901 + 100, "COMBUSTAO", new BigDecimal("120000.00"));
         return given()
