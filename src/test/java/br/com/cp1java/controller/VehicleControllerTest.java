@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class VehicleControllerTest {
 
     @LocalServerPort
@@ -128,14 +130,14 @@ class VehicleControllerTest {
 
     @Test
     void testUpdateVehicle_shouldReturnNotFound_whenVehicleNotFound(){
-        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "", 2023, 140.5, 12.5, "ELETRICO", new BigDecimal("120000.00"));
+        VehicleRequest vehicleRequest = new VehicleRequest("Toyota", "Teste", 2023, 140.5, 12.5, "ELETRICO", new BigDecimal("120000.00"));
         given()
                 .contentType(ContentType.JSON)
                 .body(vehicleRequest)
                 .when()
                 .put("/carros/e83e5705-20cf-4004-969f-4895467b831f")
                 .then()
-                .statusCode(400);
+                .statusCode(404);
     }
 
     @Test
