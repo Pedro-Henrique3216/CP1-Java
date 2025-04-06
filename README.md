@@ -1,4 +1,4 @@
-# 🚗 Vehicle Controller - API de Gerenciamento de Veículos
+# 🚗  API de Gerenciamento de Veículos
 
 Este módulo fornece um controller RESTful para cadastro, consulta, atualização, remoção e filtragem de veículos. Ele faz parte de uma aplicação desenvolvida com **Spring Boot**, utilizando boas práticas de validação e mapeamento de dados via DTOs.
 
