@@ -80,7 +80,7 @@ class VehicleControllerTest {
                 .body("modelo", equalTo(vehicleResponse.modelo()))
                 .body("ano", equalTo(vehicleResponse.ano()))
                 .body("potencia", equalTo(vehicleResponse.potencia().floatValue()))
-                .body("economia", equalTo(vehicleResponse.economia().floatValue()))
+                .body("economia", equalTo(vehicleResponse.economia()))
                 .body("tipo", equalTo(vehicleResponse.tipo().toString()))
                 .body("preco", equalTo(vehicleResponse.preco().floatValue()));
     }
@@ -110,7 +110,7 @@ class VehicleControllerTest {
                 .body("modelo", equalTo(vehicleRequest.modelo()))
                 .body("ano", equalTo(vehicleRequest.ano()))
                 .body("potencia", equalTo(vehicleRequest.potencia().floatValue()))
-                .body("economia", equalTo(vehicleRequest.economia().floatValue()))
+                .body("economia", equalTo(vehicleRequest.economia() + " km/kWh"))
                 .body("tipo", equalTo(vehicleRequest.tipo()))
                 .body("preco", equalTo(vehicleRequest.preco().floatValue()));
     }
@@ -211,14 +211,13 @@ class VehicleControllerTest {
                 .body("[0].marca", equalTo("Toyota"))
                 .body("[0].modelo", equalTo("Corolla"))
                 .body("[0].ano", equalTo(2023))
-                .body("[0].economia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(0).economia()))))
+                .body("[0].economia", equalTo(expected.get(0).economia()))
                 .body("[9].marca", equalTo("Toyota"))
                 .body("[9].modelo", equalTo("Corolla"))
                 .body("[9].ano", equalTo(2023))
-                .body("[9].economia", equalTo(Float.valueOf(String.format(Locale.US, "%.2f",expected.get(9).economia()))))
+                .body("[9].economia", equalTo(expected.get(9).economia()))
                 .extract().body() .as(new TypeRef<>() {});
 
-        assertTrue(expected.get(0).economia() > expected.get(9).economia());
         assertEquals(expected, actual);
     }
 

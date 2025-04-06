@@ -11,7 +11,7 @@ public record VehicleResponse(
         String modelo,
         Integer ano,
         Double potencia,
-        Double economia,
+        String economia,
         VehicleType tipo,
         BigDecimal preco
 ) {

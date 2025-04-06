@@ -100,7 +100,9 @@ public class VehicleController {
     }
 
     private VehicleResponse transformToResponse(Vehicle vehicle){
-        return new VehicleResponse(vehicle.getId(), vehicle.getMarca(), vehicle.getModelo(), vehicle.getAno(), vehicle.getPotencia(), vehicle.getEconomia(), vehicle.getTipo(),
+        return new VehicleResponse(vehicle.getId(), vehicle.getMarca(), vehicle.getModelo(), vehicle.getAno(), vehicle.getPotencia(),
+                vehicle.getTipo() == VehicleType.ELETRICO ? vehicle.getEconomia() + " km/kWh" : vehicle.getEconomia() + " km/l",
+                vehicle.getTipo(),
                 vehicle.getPreco());
     }
 }
